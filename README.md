@@ -14,6 +14,7 @@ Then you have to copy this file into 'platform/android' in your project folder.
 ###Authentication
 ####Basics
 
+```javascript
 var Auth = FiBa.createAuthentication();
 
 Auth.signInAnonymously({
@@ -29,7 +30,6 @@ Auth.signInWithEmailAndPassword(email, password,
  		if (_event) console.log(_event);
 		
 })
-
 
 
 Auth.addEventListener("onAuthStateChanged",function(_event) {
