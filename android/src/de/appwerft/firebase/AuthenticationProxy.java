@@ -21,12 +21,23 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GithubAuthProvider;
 
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
 public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent {
+	private final class OnCompleteHandler implements
+			OnCompleteListener<AuthResult> {
+		@Override
+		public void onComplete(@NonNull Task<AuthResult> task) {
+			if (!task.isSuccessful()) {
+			}
+		}
+	}
+
 	KrollProxy proxy;
 	private FirebaseAuth auth;
 	private Activity activity;
@@ -80,6 +91,14 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 						// ...
 					}
 				});
+
+	}
+
+	@Kroll.method
+	public void signInGithub(String token) {
+		AuthCredential credential = GithubAuthProvider.getCredential(token);
+		auth.signInWithCredential(credential).addOnCompleteListener(activity,
+				new OnCompleteHandler());
 
 	}
 

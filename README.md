@@ -10,7 +10,6 @@ Then you have to copy this file into 'platform/android' in your project folder.
 
 ##Usage
 
-
 ###Authentication
 ####Basics
 
@@ -30,7 +29,6 @@ Auth.signInWithEmailAndPassword(email, password,
  		if (_event) console.log(_event);
 		
 })
-
 
 Auth.addEventListener("onAuthStateChanged",function(_event) {
 	if (_event) console.log(_event.user);
