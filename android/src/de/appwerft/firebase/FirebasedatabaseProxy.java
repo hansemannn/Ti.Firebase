@@ -13,6 +13,8 @@ import org.appcelerator.kroll.annotations.Kroll;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.common.*;
+import com.google.android.gms.common.api.*;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
@@ -22,7 +24,7 @@ public class FirebasedatabaseProxy extends KrollProxy {
 
 	public FirebasedatabaseProxy() {
 		super();
-		database = FirebaseDatabase.getInstance();
+		this.database = FirebaseDatabase.getInstance();
 	}
 
 	@Kroll.method
