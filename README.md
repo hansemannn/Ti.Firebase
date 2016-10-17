@@ -10,13 +10,40 @@ Then you have to copy this file into 'platform/android' in your project folder.
 
 ##Usage
 
+
+###Authentication
+####Basics
+
+var Auth = FiBa.createAuthentication();
+
+Auth.signInAnonymously({
+	onComplete: function(_event) {
+		if (_event) console.log(_event);
+	}
+});
+
+Auth.createUserWithEmailAndPassword("xxx@xxxx.de","sehrGeheim");
+
+Auth.signInWithEmailAndPassword(email, password,
+	onComplete: function(_event) {
+ 		if (_event) console.log(_event);
+		
+})
+
+
+
+Auth.addEventListener("onAuthStateChanged",function(_event) {
+	if (_event) console.log(_event.user);
+});
+
+
 ###Database
 ```javascript
 var FiBa = require("de.appwerft.firebase");
 var Db = FiBa.createDatabase();
-var Ref = Db.createReference("reference");
-Ref.setValue("value");
-Ref.addEventListener("change",function(_event){
+var Ref = Db.createReference("Dog");
+Ref.setValue("Wau");
+Ref.addEventListener("onDataChange",function(_event){
 
 });
 

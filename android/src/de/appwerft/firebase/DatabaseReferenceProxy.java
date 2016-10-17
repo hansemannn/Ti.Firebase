@@ -21,31 +21,32 @@ import com.google.firebase.database.ValueEventListener;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
-public class ReferenceProxy extends KrollProxy {
+public class DatabaseReferenceProxy extends KrollProxy {
 	private FirebaseDatabase database;
 	private static DatabaseReference reference;
 	private static final String LCAT = "FiBaProx";
+	private static final String ONCHANGE = "onDataChange";
 	private static KrollProxy proxy;
 
-	public ReferenceProxy(KrollProxy proxy) {
+	public DatabaseReferenceProxy(KrollProxy proxy) {
 		super();
 		this.proxy = proxy;
 
 	}
 
-	public static ReferenceProxy createReference(DatabaseProxy db,
+	public static DatabaseReferenceProxy createReference(DatabaseProxy db,
 			String refString) {
-		ReferenceProxy referenceP = new ReferenceProxy(proxy);
+		DatabaseReferenceProxy referenceP = new DatabaseReferenceProxy(proxy);
 		Log.d(LCAT, "new reference " + refString + " created");
 		reference = db.database.getReference(refString);
-		if (proxy.hasListeners("change")) {
+		if (proxy.hasListeners(ONCHANGE)) {
 			reference.addValueEventListener(new ValueEventListener() {
 				@Override
 				public void onDataChange(DataSnapshot dataSnapshot) {
 					String value = dataSnapshot.getValue(String.class);
 					KrollDict payload = new KrollDict();
 					payload.put("value", value);
-					proxy.fireEvent("change", payload);
+					proxy.fireEvent(ONCHANGE, payload);
 					Log.d(LCAT, "Value is: " + value);
 				}
 

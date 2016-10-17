@@ -28,8 +28,8 @@ public class DatabaseProxy extends KrollProxy {
 	}
 
 	@Kroll.method
-	public ReferenceProxy createReference(String ref) {
-		return ReferenceProxy.createReference(this, ref);
+	public DatabaseReferenceProxy createReference(String ref) {
+		return DatabaseReferenceProxy.createReference(this, ref);
 	}
 
 }
