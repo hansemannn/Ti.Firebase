@@ -35,7 +35,7 @@ Auth.signInWithEmailAndPassword(email, password,
 Auth.addEventListener("onAuthStateChanged",function(_event) {
 	if (_event) console.log(_event.user);
 });
-
+```
 
 ###Database
 ```javascript
