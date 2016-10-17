@@ -43,7 +43,7 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	private Activity activity;
 	private FirebaseAuth.AuthStateListener authListener;
 
-	private static final String LCAT = "FiBaProx";
+	private static final String LCAT = "FiBaProx 🚝🚝";
 
 	public AuthenticationProxy(KrollProxy proxy) {
 		super();
