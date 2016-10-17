@@ -44,9 +44,8 @@ public class ReferenceProxy extends KrollProxy {
 				public void onDataChange(DataSnapshot dataSnapshot) {
 					String value = dataSnapshot.getValue(String.class);
 					KrollDict payload = new KrollDict();
-					payload.put("ref", refString);
 					payload.put("value", value);
-					proxy.fireEventToParent("change", payload);
+					proxy.fireEvent("change", payload);
 					Log.d(LCAT, "Value is: " + value);
 				}
 
