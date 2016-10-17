@@ -13,9 +13,10 @@ Then you have to copy this file into 'platform/android' in your project folder.
 ###Database
 ```javascript
 var FiBa = require("de.appwerft.firebase");
-var db = FiBa.createFirebasedatabase();
-db.setValue("reference","value");
-db.addEventListener("change",function(_event){
+var Db = FiBa.createDatabase();
+var Ref = Db.createReference("reference");
+Ref.setValue("value");
+Ref.addEventListener("change",function(_event){
 
 });
 

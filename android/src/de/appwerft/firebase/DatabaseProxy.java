@@ -18,21 +18,18 @@ import com.google.android.gms.common.api.*;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
-public class FirebasedatabaseProxy extends KrollProxy {
+public class DatabaseProxy extends KrollProxy {
 	FirebaseDatabase database;
 	private static final String LCAT = "FiBaProx";
 
-	public FirebasedatabaseProxy() {
+	public DatabaseProxy() {
 		super();
 		this.database = FirebaseDatabase.getInstance();
 	}
 
 	@Kroll.method
-	public void setValue(String _ref, String _value) {
-		DatabaseReference ref = database.getReference(_ref);
-		if (ref != null && _value != null) {
-			ref.setValue(_value);
-		}
+	public ReferenceProxy createReference(String ref) {
+		return ReferenceProxy.createReference(this, ref);
 	}
 
 }
