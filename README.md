@@ -11,9 +11,7 @@ Then you have to copy this file into 'platform/android' in your project folder.
 ##Usage
 
 ###Database
-The first step in accessing your storage bucket is to create an instance of FirebaseStorage:
 ```javascript
-
 var FiBa = require("de.appwerft.firebase");
 var db = FiBa.createFirebasedatabase();
 db.setValue("reference","value");
