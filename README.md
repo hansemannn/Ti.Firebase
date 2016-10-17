@@ -14,5 +14,5 @@ The first step in accessing your storage bucket is to create an instance of Fire
 ```javascript
 
 var FiBa = require("de.appwerft.firebase");
-var storage = FiBa.createFireBaseStorage();
+var storage = FiBa.createFirebasestorage();
 ``` 
