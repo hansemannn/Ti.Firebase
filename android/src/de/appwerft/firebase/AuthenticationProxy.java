@@ -11,11 +11,9 @@ package de.appwerft.firebase;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
-import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -54,44 +52,20 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	@Kroll.method
 	public void signInAnonymously() {
 		auth.signInAnonymously().addOnCompleteListener(activity,
-				new OnCompleteListener<AuthResult>() {
-					@Override
-					public void onComplete(@NonNull Task<AuthResult> task) {
-						if (task.isSuccessful()) {
-						} else {
-						}
-					}
-				});
+				new OnCompleteHandler());
 	}
 
 	@Kroll.method
 	public void createUserWithEmailAndPassword(String email, String password) {
 		auth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener(activity,
-						new OnCompleteListener<AuthResult>() {
-							@Override
-							public void onComplete(
-									@NonNull Task<AuthResult> task) {
-								if (!task.isSuccessful()) {
-								}
-							}
-						});
+				.addOnCompleteListener(activity, new OnCompleteHandler());
 
 	}
 
 	@Kroll.method
 	public void signInWithEmailAndPassword(String email, String password) {
 		auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
-				activity, new OnCompleteListener<AuthResult>() {
-					@Override
-					public void onComplete(@NonNull Task<AuthResult> task) {
-						if (!task.isSuccessful()) {
-						}
-
-						// ...
-					}
-				});
-
+				activity, new OnCompleteHandler());
 	}
 
 	@Kroll.method
@@ -99,7 +73,6 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 		AuthCredential credential = GithubAuthProvider.getCredential(token);
 		auth.signInWithCredential(credential).addOnCompleteListener(activity,
 				new OnCompleteHandler());
-
 	}
 
 	@Override
@@ -129,7 +102,6 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	public void onStart(Activity activity) {
 		super.onStart(activity);
 		auth.addAuthStateListener(authListener);
-
 	}
 
 	@Override
