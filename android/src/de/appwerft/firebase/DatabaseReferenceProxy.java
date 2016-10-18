@@ -22,47 +22,47 @@ import com.google.firebase.database.ValueEventListener;
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
 public class DatabaseReferenceProxy extends KrollProxy {
-	private FirebaseDatabase database;
-	private DatabaseReference reference;
+	private final class ValueEventHandler implements ValueEventListener {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			String value = dataSnapshot.getValue(String.class);
+			KrollDict payload = new KrollDict();
+			payload.put("value", value);
+			proxy.fireEvent(ONCHANGE, payload);
+			Log.d(LCAT, "Value is: " + value);
+		}
+
+		@Override
+		public void onCancelled(DatabaseError error) {
+			Log.w(LCAT, "Failed to read value.", error.toException());
+		}
+	}
+
+	private DatabaseReference databaseReference;
 	private static final String LCAT = "FiBaProx";
 	private static final String ONCHANGE = "onDataChange";
-	private static KrollProxy proxy;
+	private KrollProxy proxy;
 
 	public DatabaseReferenceProxy(KrollProxy proxy) {
 		super();
 		this.proxy = proxy;
-
 	}
 
-	public DatabaseReferenceProxy createReference(DatabaseProxy db,
+	public DatabaseReferenceProxy createReference(DatabaseProxy databaseProxy,
 			String refString) {
-		DatabaseReferenceProxy referenceP = new DatabaseReferenceProxy(proxy);
-		Log.d(LCAT, "new reference " + refString + " created");
-		reference = db.database.getReference(refString);
+		DatabaseReferenceProxy referenceProxy = new DatabaseReferenceProxy(
+				proxy);
+		databaseReference = databaseProxy.database.getReference(refString);
 		if (proxy.hasListeners(ONCHANGE)) {
-			reference.addValueEventListener(new ValueEventListener() {
-				@Override
-				public void onDataChange(DataSnapshot dataSnapshot) {
-					String value = dataSnapshot.getValue(String.class);
-					KrollDict payload = new KrollDict();
-					payload.put("value", value);
-					proxy.fireEvent(ONCHANGE, payload);
-					Log.d(LCAT, "Value is: " + value);
-				}
-
-				@Override
-				public void onCancelled(DatabaseError error) {
-					Log.w(LCAT, "Failed to read value.", error.toException());
-				}
-			});
+			databaseReference.addValueEventListener(new ValueEventHandler());
 		}
-		return referenceP;
+		return referenceProxy;
 	}
 
 	@Kroll.method
 	public void setValue(String _ref, KrollDict _value) {
-		if (reference != null && _value != null) {
-			reference.setValue(_value);
+		if (databaseReference != null && _value != null) {
+			databaseReference.setValue(_value);
 		}
 	}
 
