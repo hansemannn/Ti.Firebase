@@ -90,7 +90,6 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 						result.put("uid", user.getUid());
 						result.put("email", user.getEmail());
 						result.put("photoUrl", user.getPhotoUrl());
-
 						proxy.fireEvent("onAuthStateChanged", result);
 						// User is signed in
 					} else {
