@@ -11,25 +11,26 @@ package de.appwerft.firebase;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.gms.common.*;
-import com.google.android.gms.common.api.*;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
 public class DatabaseProxy extends KrollProxy {
 	FirebaseDatabase database;
 	private static final String LCAT = "FiBaProx";
+	private KrollProxy proxy;
 
-	public DatabaseProxy() {
+	public DatabaseProxy(KrollProxy proxy) {
 		super();
+		this.proxy = proxy;
 		this.database = FirebaseDatabase.getInstance();
 	}
 
 	@Kroll.method
 	public DatabaseReferenceProxy createReference(String ref) {
-		return DatabaseReferenceProxy.createReference(this, ref);
+		DatabaseReferenceProxy databaserefproxy = new DatabaseReferenceProxy(
+				this.proxy);
+		return databaserefproxy.createReference(this, ref);
 	}
 
 }

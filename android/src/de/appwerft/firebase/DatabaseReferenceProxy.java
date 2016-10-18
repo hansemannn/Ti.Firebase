@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 @Kroll.proxy(creatableInModule = TifirebaseModule.class)
 public class DatabaseReferenceProxy extends KrollProxy {
 	private FirebaseDatabase database;
-	private static DatabaseReference reference;
+	private DatabaseReference reference;
 	private static final String LCAT = "FiBaProx";
 	private static final String ONCHANGE = "onDataChange";
 	private static KrollProxy proxy;
@@ -34,7 +34,7 @@ public class DatabaseReferenceProxy extends KrollProxy {
 
 	}
 
-	public static DatabaseReferenceProxy createReference(DatabaseProxy db,
+	public DatabaseReferenceProxy createReference(DatabaseProxy db,
 			String refString) {
 		DatabaseReferenceProxy referenceP = new DatabaseReferenceProxy(proxy);
 		Log.d(LCAT, "new reference " + refString + " created");
@@ -60,10 +60,9 @@ public class DatabaseReferenceProxy extends KrollProxy {
 	}
 
 	@Kroll.method
-	public void setValue(String _ref, String _value) {
-		DatabaseReference ref = database.getReference(_ref);
-		if (ref != null && _value != null) {
-			ref.setValue(_value);
+	public void setValue(String _ref, KrollDict _value) {
+		if (reference != null && _value != null) {
+			reference.setValue(_value);
 		}
 	}
 

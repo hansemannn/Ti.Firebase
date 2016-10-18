@@ -31,7 +31,8 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 			OnCompleteListener<AuthResult> {
 		@Override
 		public void onComplete(@NonNull Task<AuthResult> task) {
-			if (!task.isSuccessful()) {
+			if (task.isSuccessful()) {
+			} else {
 			}
 		}
 	}
@@ -40,7 +41,6 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	private FirebaseAuth auth;
 	private Activity activity;
 	private FirebaseAuth.AuthStateListener authListener;
-
 	private static final String LCAT = "FiBaProx 🚝🚝";
 
 	public AuthenticationProxy(KrollProxy proxy) {
@@ -89,6 +89,8 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 						result.put("displayName", user.getDisplayName());
 						result.put("uid", user.getUid());
 						result.put("email", user.getEmail());
+						result.put("photoUrl", user.getPhotoUrl());
+
 						proxy.fireEvent("onAuthStateChanged", result);
 						// User is signed in
 					} else {

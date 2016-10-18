@@ -39,8 +39,8 @@ Auth.addEventListener("onAuthStateChanged",function(_event) {
 ```javascript
 var FiBa = require("de.appwerft.firebase");
 var Db = FiBa.createDatabase();
-var Ref = Db.createReference("Dog");
-Ref.setValue("Wau");
+var Ref = Db.createReference("Animals/Dog");
+Ref.setValue({color:"braun",sound:"wau"});
 Ref.addEventListener("onDataChange",function(_event){
 
 });
