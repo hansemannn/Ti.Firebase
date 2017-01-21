@@ -9,6 +9,7 @@ description: tifirebase
 author: Rainer Schleevoigt
 license: Specify your license
 copyright: Copyright (c) 2016 by 
+respackage : de.appwerft.firebase
 
 # these should not be edited
 name: tifirebase
