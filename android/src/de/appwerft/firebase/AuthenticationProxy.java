@@ -13,6 +13,7 @@ import org.appcelerator.kroll.KrollFunction;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
+import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 
 import android.app.Activity;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
+import org.appcelerator.titanium.TiBaseActivity;
 
 @Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent {
@@ -88,6 +90,7 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 
 	@Override
 	public void onCreate(Activity activity, Bundle unused) {
+		((TiBaseActivity) activity).addOnLifecycleEventListener(this);
 		this.activity = activity;
 		Log.e(LCAT, "try to get instance of FirebaseAuth. ");
 		auth = FirebaseAuth.getInstance();
