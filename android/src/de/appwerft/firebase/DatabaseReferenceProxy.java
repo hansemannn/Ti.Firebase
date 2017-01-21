@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
-@Kroll.proxy(creatableInModule = TifirebaseModule.class)
+@Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class DatabaseReferenceProxy extends KrollProxy {
 	private final class ValueEventHandler implements ValueEventListener {
 		@Override
@@ -65,5 +65,4 @@ public class DatabaseReferenceProxy extends KrollProxy {
 			databaseReference.setValue(_value);
 		}
 	}
-
 }

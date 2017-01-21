@@ -13,8 +13,8 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
 
 @Kroll.module(name = "Tifirebase", id = "de.appwerft.firebase")
-public class TifirebaseModule extends KrollModule {
-	public TifirebaseModule() {
+public class FirebaseModule extends KrollModule {
+	public FirebaseModule() {
 		super();
 	}
 

@@ -2,5 +2,5 @@
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/AuthenticationProxy.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/DatabaseProxy.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/DatabaseReferenceProxy.java"
+"/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/FirebaseModule.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/FirebasestorageProxy.java"
-"/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Firebase/android/src/de/appwerft/firebase/TifirebaseModule.java"

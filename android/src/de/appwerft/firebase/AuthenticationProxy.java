@@ -11,6 +11,7 @@ package de.appwerft.firebase;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
+import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 
 import android.app.Activity;
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
 
-@Kroll.proxy(creatableInModule = TifirebaseModule.class)
+@Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent {
 	private final class OnCompleteHandler implements
 			OnCompleteListener<AuthResult> {
@@ -40,17 +41,19 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	private FirebaseAuth auth;
 	private Activity activity;
 	private FirebaseAuth.AuthStateListener authListener;
-	private static final String LCAT = "FiBaProx 🚝🚝";
+	private static final String LCAT = "FiBa 🚝🚝";
 
 	public AuthenticationProxy() {
 		super();
-
 	}
 
 	@Kroll.method
 	public void signInAnonymously() {
-		auth.signInAnonymously().addOnCompleteListener(activity,
-				new OnCompleteHandler());
+		if (auth != null) {
+			auth.signInAnonymously().addOnCompleteListener(activity,
+					new OnCompleteHandler());
+		} else
+			Log.e(LCAT, "auth was null, cannot do some magic");
 	}
 
 	@Kroll.method
@@ -74,8 +77,9 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	}
 
 	@Override
-	public void onCreate(Activity activity, Bundle savedInstanceState) {
+	public void onCreate(Activity activity, Bundle unused) {
 		this.activity = activity;
+		Log.e(LCAT, "try to get instance of FirebaseAuth. ");
 		auth = FirebaseAuth.getInstance();
 		authListener = new FirebaseAuth.AuthStateListener() {
 			@Override
@@ -100,7 +104,7 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	@Override
 	public void onStart(Activity activity) {
 		super.onStart(activity);
-		auth.addAuthStateListener(authListener);
+		// auth.addAuthStateListener(authListener);
 	}
 
 	@Override

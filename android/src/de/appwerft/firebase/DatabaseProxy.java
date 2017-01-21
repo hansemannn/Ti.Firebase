@@ -14,7 +14,7 @@ import org.appcelerator.kroll.annotations.Kroll;
 import com.google.firebase.database.FirebaseDatabase;
 
 // This proxy can be created by calling Tifirebase.createExample({message: "hello world"})
-@Kroll.proxy(creatableInModule = TifirebaseModule.class)
+@Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class DatabaseProxy extends KrollProxy {
 	FirebaseDatabase database;
 	private static final String LCAT = "FiBaProx";

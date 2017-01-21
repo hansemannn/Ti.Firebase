@@ -1,4 +1,4 @@
-<project name="tifirebase" default="dist">
+<project name="firebase" default="dist">
 	<description>
 		Ant build script for Titanium Android module tifirebase
 	</description>
