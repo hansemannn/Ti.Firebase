@@ -15,7 +15,6 @@ import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +29,7 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	private final class OnCompleteHandler implements
 			OnCompleteListener<AuthResult> {
 		@Override
-		public void onComplete(@NonNull Task<AuthResult> task) {
+		public void onComplete(Task<AuthResult> task) {
 			if (task.isSuccessful()) {
 			} else {
 			}
@@ -80,7 +79,7 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 		auth = FirebaseAuth.getInstance();
 		authListener = new FirebaseAuth.AuthStateListener() {
 			@Override
-			public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+			public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
 				FirebaseUser user = firebaseAuth.getCurrentUser();
 				if (proxy.hasListeners("onAuthStateChanged"))
 					if (user != null) {
