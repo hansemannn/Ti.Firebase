@@ -9,6 +9,7 @@
 package de.appwerft.firebase;
 
 import org.appcelerator.kroll.KrollDict;
+import org.appcelerator.kroll.KrollFunction;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
@@ -31,8 +32,10 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 			OnCompleteListener<AuthResult> {
 		@Override
 		public void onComplete(Task<AuthResult> task) {
-			if (task.isSuccessful()) {
-			} else {
+			if (onComplete != null) {
+				KrollDict kd = new KrollDict();
+				kd.put("success", task.isSuccessful());
+				onComplete.call(getKrollObject(), kd);
 			}
 		}
 	}
@@ -42,13 +45,20 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	private Activity activity;
 	private FirebaseAuth.AuthStateListener authListener;
 	private static final String LCAT = "FiBa 🚝🚝";
+	KrollFunction onComplete;
 
 	public AuthenticationProxy() {
 		super();
 	}
 
 	@Kroll.method
-	public void signInAnonymously() {
+	public void signInAnonymously(KrollDict opts) {
+		if (opts.containsKeyAndNotNull("onComplete")) {
+			Object o = opts.get("onComplete");
+			if (o instanceof KrollFunction) {
+				onComplete = (KrollFunction) o;
+			}
+		}
 		if (auth != null) {
 			auth.signInAnonymously().addOnCompleteListener(activity,
 					new OnCompleteHandler());
