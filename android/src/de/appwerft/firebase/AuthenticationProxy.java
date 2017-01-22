@@ -98,9 +98,9 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 			@Override
 			public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
 				FirebaseUser user = firebaseAuth.getCurrentUser();
+				KrollDict result = new KrollDict();
 				if (proxy.hasListeners("onAuthStateChanged"))
 					if (user != null) {
-						KrollDict result = new KrollDict();
 						result.put("displayName", user.getDisplayName());
 						result.put("uid", user.getUid());
 						result.put("email", user.getEmail());
