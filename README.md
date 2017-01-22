@@ -9,9 +9,6 @@ First you have to create a google-services.json following the instructions of [o
 
 Then you have to copy this file into 'platform/android' in your project folder.
 
-##Usage
-
-First you have to generate a google-services.json on your [firebase console](https://console.firebase.google.com/). 
 For this you need your bundleID and optional the SHA1 key of you CERT.
 Goggle gives you this file:
 ```json
@@ -71,8 +68,48 @@ But the build system aspects a xml file in res folder like this:
     <string name="google_storage_bucket" translatable="false">messaging-b1607.appspot.com</string>
 </resources>
 ```
-You can manually convert or use a gradle script.
-After downloading you can copy the file in your project folder. In this folder you start in a shell:
+You can manually convert or use a [gradle script](https://developers.google.com/android/guides/google-services-plugin).
+After downloading you can copy the file in MODULE/android folder. 
+In this folder you need an additional file `build.gradle` with this content (maybe you have to edit paths):
+```
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {	
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.google.gms:google-services:3.0.0'
+    }
+}
+
+
+task jar(type: Jar) {
+    from 'android.sourceSets.main.java.srcDirs'
+}
+
+
+apply plugin: 'com.android.application'
+
+
+android {
+  compileSdkVersion 23
+  buildToolsVersion "23"
+}
+
+dependencies {
+  // ...
+  compile 'com.google.firebase:firebase-core:9.6.1'
+  compile 'com.google.firebase:firebase-database:9.6.1'
+  compile 'com.google.firebase:firebase-auth:9.6.1'
+  compile 'com.google.firebase:firebase-messaging:9.6.1'
+}
+
+apply plugin: 'com.google.gms.google-services'
+```
+
+
+In this folder you start in a shell:
 ```bash
 gradle processReleaseGoogleServices
 ```
@@ -80,7 +117,7 @@ You will find `gradle` and `processReleaseGoogleServices` is missing.
 
 You can install `gradle` with brew.
 
-
+##Usage
 
 ###Authentication
 ####Basics
