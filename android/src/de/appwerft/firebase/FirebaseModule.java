@@ -12,14 +12,21 @@ import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+
 @Kroll.module(name = "Tifirebase", id = "de.appwerft.firebase")
 public class FirebaseModule extends KrollModule {
+	public static FirebaseAuth auth;
+
 	public FirebaseModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
+		FirebaseApp.initializeApp(app);
+		auth = FirebaseAuth.getInstance();
 	}
 
 }
