@@ -14,28 +14,27 @@ Goggle gives you this file:
 ```json
 {
   "project_info": {
-    "project_number": "443482612480",
-    "firebase_url": "https://messaging-b1607.firebaseio.com",
-    "project_id": "messaging-b1607",
-    "storage_bucket": "messaging-b1607.appspot.com"
+    "project_number": "4434****480",
+    "firebase_url": "https://messaging-nixzulesen.firebaseio.com",
+    "project_id": "messaging-nixzulesen",
+    "storage_bucket": "messaging-nixzulesen.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443482612480:android:404d21998632dedc",
+        "mobilesdk_app_id": "1:44348****droid:404d2XX32dedc",
         "android_client_info": {
           "package_name": "com.test.firebase"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443482612480-43ifdng4gfjujdj80u2tqffqvtvieqac.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "443482********"
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ0ZcNbV5JtfJxKLHYsPtQasE4lcbprd4"
+          "current_key": "AIzaSyCZ0Zc******tQasE4lcbprd4"
         }
       ],
       "services": {
@@ -59,13 +58,13 @@ But the build system aspects a xml file in res folder like this:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_web_client_id" translatable="false">443482612480-43ifdng4gfjujdj80u2tqffqvtvieqac.apps.googleusercontent.com</string>
-    <string name="firebase_database_url" translatable="false">https://messaging-b1607.firebaseio.com</string>
+    <string name="default_web_client_id" translatable="false">44348****ifdng4gfjujdj80u2tqffqvtvieqac.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://messaging-nixzulesen.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">443482612480</string>
-    <string name="google_api_key" translatable="false">AIzaSyCZ0ZcNbV5JtfJxKLHYsPtQasE4lcbprd4</string>
-    <string name="google_app_id" translatable="false">1:443482612480:android:404d21998632dedc</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCZ0ZcNbV5JtfJxKLHYsPtQasE4lcbprd4</string>
-    <string name="google_storage_bucket" translatable="false">messaging-b1607.appspot.com</string>
+    <string name="google_api_key" translatable="false">AIzaSyC******QasE4lcbprd4</string>
+    <string name="google_app_id" translatable="false">1:443****480:android:404d21998632dedc</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSy****tQasE4lcbprd4</string>
+    <string name="google_storage_bucket" translatable="false">messaging-nixzulesen.appspot.com</string>
 </resources>
 ```
 You can manually convert or use a [gradle script](https://developers.google.com/android/guides/google-services-plugin).
