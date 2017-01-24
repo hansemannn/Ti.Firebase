@@ -8,25 +8,59 @@
  */
 package de.appwerft.firebase;
 
+import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
 
+import android.content.Context;
+
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 @Kroll.module(name = "Tifirebase", id = "de.appwerft.firebase")
 public class FirebaseModule extends KrollModule {
 	public static FirebaseAuth auth;
+	public static Context ctx;
+	private static String apiKey;
+	private static String applicationId;
+	private static String databaseUrl;
+	private static String gcmSenderId;
+	private static String storageBucket;
+
+	private static TiApplication app;
 
 	public FirebaseModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
-	public static void onAppCreate(TiApplication app) {
-		FirebaseApp.initializeApp(app);
-		auth = FirebaseAuth.getInstance();
+	public static void onAppCreate(TiApplication _app) {
+		ctx = _app.getApplicationContext();
+		app = _app;
 	}
 
+	@Kroll.method
+	public static void initFirebase(KrollDict opts) {
+		if (opts.containsKeyAndNotNull("apiKey"))
+			apiKey = opts.getString("apiKey");
+		if (opts.containsKeyAndNotNull("applicationId"))
+			applicationId = opts.getString("applicationId");
+		if (opts.containsKeyAndNotNull("databaseUrl"))
+			databaseUrl = opts.getString("databaseUrl");
+		if (opts.containsKeyAndNotNull("gcmSenderId"))
+			gcmSenderId = opts.getString("gcmSenderId");
+		if (opts.containsKeyAndNotNull("storageBucket"))
+			storageBucket = opts.getString("storageBucket");
+		FirebaseApp.initializeApp(
+				ctx,
+				new FirebaseOptions.Builder().setApiKey(apiKey)
+						.setApplicationId(applicationId)
+						.setDatabaseUrl(databaseUrl)
+						.setGcmSenderId(gcmSenderId)
+						.setStorageBucket(storageBucket).build());
+		auth = FirebaseAuth.getInstance();
+
+	}
 }
