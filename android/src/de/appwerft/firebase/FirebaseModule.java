@@ -57,9 +57,15 @@ public class FirebaseModule extends KrollModule {
 	}
 
 	@Kroll.method
+	public void initializeApp(KrollDict opts) {
+		initFirebase(opts);
+	}
+
+	@Kroll.method
 	public void initFirebase(KrollDict opts) {
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
+		Log.d(LCAT, "packageName of this app = " + packageName);
 		try {
 			JSONObject json = new JSONObject(loadJSONFromAsset());
 			JSONObject projectInfo = json.getJSONObject("project_info");
@@ -68,31 +74,38 @@ public class FirebaseModule extends KrollModule {
 			gcmSenderId = projectInfo.getString("project_number");
 			JSONArray clients = json.getJSONArray("client");
 			for (int i = 0; i < clients.length(); i++) {
-				JSONObject clientInfo = clients.getJSONObject(i).getJSONObject(
-						"client_info");
+				JSONObject client = clients.getJSONObject(i);
+				JSONObject clientInfo = client.getJSONObject("client_info");
 				String pName = clientInfo.getJSONObject("android_client_info")
 						.getString("package_name");
+				Log.d(LCAT, "packageName in clients of json = " + pName);
 				if (pName.equals(packageName)) {
-					applicationId = clientInfo.getString("mobilesdk_app_id");
-					apiKey = clients.getJSONObject(i).getJSONObject("api_key")
+					Log.d(LCAT, "packageName found in json ");
+					Log.d(LCAT, clients.getJSONObject(i).toString());
+					applicationId = client.getJSONObject("client_info")
+							.getString("mobilesdk_app_id");
+					apiKey = client.getJSONArray("api_key").getJSONObject(0)
 							.getString("current_key");
 				}
 			}
+			if (apiKey == null)
+				Log.e(LCAT, packageName
+						+ " is not part of google-services.json");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-/*
-		if (opts.containsKeyAndNotNull("apiKey"))
-			apiKey = opts.getString("apiKey");
-		if (opts.containsKeyAndNotNull("applicationId"))
-			applicationId = opts.getString("applicationId");
-		if (opts.containsKeyAndNotNull("databaseUrl"))
-			databaseUrl = opts.getString("databaseUrl");
-		if (opts.containsKeyAndNotNull("gcmSenderId"))
-			gcmSenderId = opts.getString("gcmSenderId");
-		if (opts.containsKeyAndNotNull("storageBucket"))
-			storageBucket = opts.getString("storageBucket");
-			*/
+		/*
+		 * if (opts.containsKeyAndNotNull("apiKey")) apiKey =
+		 * opts.getString("apiKey"); if
+		 * (opts.containsKeyAndNotNull("applicationId")) applicationId =
+		 * opts.getString("applicationId"); if
+		 * (opts.containsKeyAndNotNull("databaseUrl")) databaseUrl =
+		 * opts.getString("databaseUrl"); if
+		 * (opts.containsKeyAndNotNull("gcmSenderId")) gcmSenderId =
+		 * opts.getString("gcmSenderId"); if
+		 * (opts.containsKeyAndNotNull("storageBucket")) storageBucket =
+		 * opts.getString("storageBucket");
+		 */
 		FirebaseApp.initializeApp(
 				ctx,
 				new FirebaseOptions.Builder().setApiKey(apiKey)
@@ -107,6 +120,7 @@ public class FirebaseModule extends KrollModule {
 		String json = null;
 		try {
 			String url = resolveUrl(null, "google-services.json");
+			Log.d(LCAT, url);
 			TiBaseFile file = TiFileFactory.createTitaniumFile(
 					new String[] { url }, false);
 			InputStream is = file.getInputStream();

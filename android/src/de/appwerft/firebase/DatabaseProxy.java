@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 @Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class DatabaseProxy extends KrollProxy {
 	FirebaseDatabase database;
-	private static final String LCAT = "FiBaProx";
+	private static final String LCAT = FirebaseModule.LCAT;
 	private KrollProxy proxy;
 
 	public DatabaseProxy(KrollProxy proxy) {
