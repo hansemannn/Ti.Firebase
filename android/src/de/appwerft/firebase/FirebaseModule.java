@@ -42,7 +42,7 @@ public class FirebaseModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public static void initFirebase(KrollDict opts) {
+	public void initFirebase(KrollDict opts) {
 		if (opts.containsKeyAndNotNull("apiKey"))
 			apiKey = opts.getString("apiKey");
 		if (opts.containsKeyAndNotNull("applicationId"))
