@@ -81,7 +81,7 @@ public class FirebaseModule extends KrollModule {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
+/*
 		if (opts.containsKeyAndNotNull("apiKey"))
 			apiKey = opts.getString("apiKey");
 		if (opts.containsKeyAndNotNull("applicationId"))
@@ -92,6 +92,7 @@ public class FirebaseModule extends KrollModule {
 			gcmSenderId = opts.getString("gcmSenderId");
 		if (opts.containsKeyAndNotNull("storageBucket"))
 			storageBucket = opts.getString("storageBucket");
+			*/
 		FirebaseApp.initializeApp(
 				ctx,
 				new FirebaseOptions.Builder().setApiKey(apiKey)
