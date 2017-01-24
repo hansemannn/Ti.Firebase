@@ -6,9 +6,8 @@ import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
-import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
+//import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 import org.appcelerator.titanium.TiBaseActivity;
-//import android.app.Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +26,7 @@ import com.google.firebase.auth.GithubAuthProvider;
 //import org.appcelerator.titanium.TiBaseActivity;
 
 @Kroll.proxy(creatableInModule = FirebaseModule.class)
-public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent {
+public class AuthenticationProxy extends KrollProxy {
 	private final class OnCompleteHandler implements
 			OnCompleteListener<AuthResult> {
 		@Override
@@ -42,9 +41,9 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 
 	KrollProxy proxy;
 	private FirebaseAuth auth;
-	Activity activity;
+	Activity activity = FirebaseModule.activity;
 	private FirebaseAuth.AuthStateListener authListener;
-	private static final String LCAT = "FiBa 🚝🚝";
+	private static final String LCAT = FirebaseModule.LCAT;
 	KrollFunction onComplete;
 
 	public AuthenticationProxy() {
@@ -54,14 +53,18 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 	@Kroll.method
 	public void signInAnonymously(KrollDict opts) {
 		Log.d(LCAT, " signInAnonymously");
+		Activity activity = TiApplication.getAppCurrentActivity();
 		if (opts.containsKeyAndNotNull("onComplete")) {
 			Object o = opts.get("onComplete");
 			if (o instanceof KrollFunction) {
 				onComplete = (KrollFunction) o;
+				Log.d(LCAT, "onComplete callback imported");
 			}
 		}
 		initAuth();
 		if (auth != null) {
+			Log.e(LCAT, "auth was not null, try to signInAnonymously");
+			Log.d(LCAT, activity.toString());
 			auth.signInAnonymously().addOnCompleteListener(activity,
 					new OnCompleteHandler());
 		} else
@@ -96,14 +99,16 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 			@Override
 			public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
 				FirebaseUser user = firebaseAuth.getCurrentUser();
+				Log.d(LCAT, user.toString());
 				KrollDict result = new KrollDict();
-				if (proxy.hasListeners("onAuthStateChanged"))
+				if (hasListeners("onAuthStateChanged"))
 					if (user != null) {
 						result.put("displayName", user.getDisplayName());
 						result.put("uid", user.getUid());
 						result.put("email", user.getEmail());
 						result.put("photoUrl", user.getPhotoUrl());
-						proxy.fireEvent("onAuthStateChanged", result);
+						fireEvent("onAuthStateChanged", result);
+						Log.d(LCAT, result.toString());
 						// User is signed in
 					} else {
 						// User is signed out
@@ -113,27 +118,4 @@ public class AuthenticationProxy extends KrollProxy implements OnLifecycleEvent 
 		auth.addAuthStateListener(authListener);
 	}
 
-	@Override
-	public void onCreate(Activity activity, Bundle unused) {
-		auth = FirebaseAuth.getInstance();
-		// ((TiBaseActivity) activity).addOnLifecycleEventListener(this);
-		this.activity = activity;
-		Log.e(LCAT, "try to get instance of FirebaseAuth. ");
-
-	}
-
-	@Override
-	public void onStart(Activity activity) {
-		super.onStart(activity);
-		Log.d(LCAT, "addAuthStateListener");
-
-	}
-
-	@Override
-	public void onStop(Activity activity) {
-		if (authListener != null) {
-			auth.removeAuthStateListener(authListener);
-		}
-		super.onStop(activity);
-	}
 }

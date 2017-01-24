@@ -8,16 +8,28 @@
  */
 package de.appwerft.firebase;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
+import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.io.TiBaseFile;
+import org.appcelerator.titanium.io.TiFileFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.*;
 
 @Kroll.module(name = "Tifirebase", id = "de.appwerft.firebase")
 public class FirebaseModule extends KrollModule {
@@ -28,8 +40,10 @@ public class FirebaseModule extends KrollModule {
 	private static String databaseUrl;
 	private static String gcmSenderId;
 	private static String storageBucket;
+	public static Activity activity;
 
 	private static TiApplication app;
+	public static final String LCAT = "FiBa 🚝🚝";
 
 	public FirebaseModule() {
 		super();
@@ -39,10 +53,19 @@ public class FirebaseModule extends KrollModule {
 	public static void onAppCreate(TiApplication _app) {
 		ctx = _app.getApplicationContext();
 		app = _app;
+		activity = _app.getCurrentActivity();
 	}
 
 	@Kroll.method
 	public void initFirebase(KrollDict opts) {
+
+		try {
+			JSONObject json = new JSONObject(loadJSONFromAsset());
+			Log.d(LCAT, json.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		if (opts.containsKeyAndNotNull("apiKey"))
 			apiKey = opts.getString("apiKey");
 		if (opts.containsKeyAndNotNull("applicationId"))
@@ -61,6 +84,24 @@ public class FirebaseModule extends KrollModule {
 						.setGcmSenderId(gcmSenderId)
 						.setStorageBucket(storageBucket).build());
 		auth = FirebaseAuth.getInstance();
+	}
 
+	public String loadJSONFromAsset() {
+		String json = null;
+		try {
+			String url = resolveUrl(null, "google-services.json");
+			TiBaseFile file = TiFileFactory.createTitaniumFile(
+					new String[] { url }, false);
+			InputStream is = file.getInputStream();
+			int size = is.available();
+			byte[] buffer = new byte[size];
+			is.read(buffer);
+			is.close();
+			json = new String(buffer, "UTF-8");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		return json;
 	}
 }
