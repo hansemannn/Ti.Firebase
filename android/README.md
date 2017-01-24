@@ -18,6 +18,8 @@ Download and copy  this file into Ressources folder inside your project folder.
 
 ```javascript
 var FiBa =require("de.appwerft.firebase");
+
+// first initalizing, options are optional, comes from JOSN file in your Ressources folder
 FiBa.initFirebase({
 	apiKey:"AIzaSyB2RC****9q5uxjPl0h41qnp3QPcw",  //optional
 	applicationId :"1:531***4300:android:39aa7ff12f2dfd4b" //optional
