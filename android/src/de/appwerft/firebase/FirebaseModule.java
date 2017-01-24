@@ -58,10 +58,26 @@ public class FirebaseModule extends KrollModule {
 
 	@Kroll.method
 	public void initFirebase(KrollDict opts) {
-
+		String packageName = TiApplication.getAppCurrentActivity()
+				.getPackageName();
 		try {
 			JSONObject json = new JSONObject(loadJSONFromAsset());
-			Log.d(LCAT, json.toString());
+			JSONObject projectInfo = json.getJSONObject("project_info");
+			storageBucket = projectInfo.getString("storage_bucket");
+			databaseUrl = projectInfo.getString("firebase_url");
+			gcmSenderId = projectInfo.getString("project_number");
+			JSONArray clients = json.getJSONArray("client");
+			for (int i = 0; i < clients.length(); i++) {
+				JSONObject clientInfo = clients.getJSONObject(i).getJSONObject(
+						"client_info");
+				String pName = clientInfo.getJSONObject("android_client_info")
+						.getString("package_name");
+				if (pName.equals(packageName)) {
+					applicationId = clientInfo.getString("mobilesdk_app_id");
+					apiKey = clients.getJSONObject(i).getJSONObject("api_key")
+							.getString("current_key");
+				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
