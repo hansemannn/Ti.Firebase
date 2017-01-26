@@ -18,20 +18,18 @@ In Alloy projects copy the file to `app/assets`
 The auth/creds wil read from google-services.json. YOu can overwrite this in method `initFirebase()`
 ```javascript
 var FiBa =require("de.appwerft.firebase");
-var Auth = FiBa.createAuthentication();
-
-Auth.signInAnonymously({
-	onComplete: function(_event) {
-		if (_event) console.log(_event);
-		console.log('Trying database');
-
-		var Db = FiBa.createDatabase();
-		var Ref = Db.createReference("app:test");
-		Ref.setValue({color:"braun",sound:"wau"});
-		Ref.addEventListener("onDataChange",function(_event){
-			console.log(_event);
-		});
-
+if (FiBa = initFirebase()) {
+	var Auth = FiBa.createAuthentication();
+	Auth.signInAnonymously({
+		onComplete: function(_event) {
+			if (_event) console.log(_event);
+			var Db = FiBa.createDatabase();
+			var Ref = Db.createReference("app:test");
+			Ref.setValue({color:"braun",sound:"wau"});
+			Ref.addEventListener("onDataChange",function(_event){
+				console.log(_event);
+			});
+ 		}
 	}
 });
 Auth.addEventListener("onAuthStateChanged",function(_event) {
