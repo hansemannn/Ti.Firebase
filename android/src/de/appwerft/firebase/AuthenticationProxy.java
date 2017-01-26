@@ -7,16 +7,12 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 //import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
-import org.appcelerator.titanium.TiBaseActivity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +23,31 @@ import com.google.firebase.auth.GithubAuthProvider;
 
 @Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class AuthenticationProxy extends KrollProxy {
+
+	private final class AuthStateHandler implements
+			FirebaseAuth.AuthStateListener {
+		@Override
+		public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
+			FirebaseUser user = firebaseAuth.getCurrentUser();
+			KrollDict result = new KrollDict();
+			if (hasListeners("onAuthStateChanged"))
+				if (user != null) {
+					result.put("uid", user.getUid());
+					if (user.getDisplayName() != null)
+						result.put("displayName", user.getDisplayName());
+					if (user.getEmail() != null)
+						result.put("email", user.getEmail());
+					if (user.getPhotoUrl() != null)
+						result.put("photoUrl", user.getPhotoUrl());
+					if (hasListeners("onAuthStateChanged"))
+						fireEvent("onAuthStateChanged", result);
+					Log.d(LCAT, result.toString());
+				} else {
+					Log.e(LCAT, "user was null in onAuthStateChanged");
+				}
+		}
+	}
+
 	private final class OnCompleteHandler implements
 			OnCompleteListener<AuthResult> {
 		@Override
@@ -53,7 +74,7 @@ public class AuthenticationProxy extends KrollProxy {
 	@Kroll.method
 	public void signInAnonymously(KrollDict opts) {
 		Log.d(LCAT, " signInAnonymously");
-		Activity activity = TiApplication.getAppCurrentActivity();
+		Activity activity = TiApplication.getAppRootOrCurrentActivity();
 		if (opts.containsKeyAndNotNull("onComplete")) {
 			Object o = opts.get("onComplete");
 			if (o instanceof KrollFunction) {
@@ -61,14 +82,22 @@ public class AuthenticationProxy extends KrollProxy {
 				Log.d(LCAT, "onComplete callback imported");
 			}
 		}
-		initAuth();
-		if (auth != null) {
-			Log.e(LCAT, "auth was not null, try to signInAnonymously");
+		Log.e(LCAT, "opts in signInAnonymously imported, try to initAuth()");
+		auth = FirebaseModule.auth;
+		if (auth == null) {
+			Log.e(LCAT, "auth was null");
+			return;
+		}
+		Log.d(LCAT,
+				"auth created, try to add AuthStateListener " + auth.toString());
+		auth.addAuthStateListener(new AuthStateHandler());
+		Log.e(LCAT, "auth was not null, try to signInAnonymously");
+		if (activity != null) {
 			Log.d(LCAT, activity.toString());
 			auth.signInAnonymously().addOnCompleteListener(activity,
 					new OnCompleteHandler());
 		} else
-			Log.e(LCAT, "auth was null, cannot do some magic");
+			Log.e(LCAT, "activity was null");
 	}
 
 	@Kroll.method
@@ -89,33 +118,6 @@ public class AuthenticationProxy extends KrollProxy {
 		AuthCredential credential = GithubAuthProvider.getCredential(token);
 		auth.signInWithCredential(credential).addOnCompleteListener(activity,
 				new OnCompleteHandler());
-	}
-
-	private void initAuth() {
-		auth = FirebaseModule.auth;
-		Log.d(LCAT,
-				"auth created, try to add AuthStateListener " + auth.toString());
-		authListener = new FirebaseAuth.AuthStateListener() {
-			@Override
-			public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
-				FirebaseUser user = firebaseAuth.getCurrentUser();
-				Log.d(LCAT, user.toString());
-				KrollDict result = new KrollDict();
-				if (hasListeners("onAuthStateChanged"))
-					if (user != null) {
-						result.put("displayName", user.getDisplayName());
-						result.put("uid", user.getUid());
-						result.put("email", user.getEmail());
-						result.put("photoUrl", user.getPhotoUrl());
-						fireEvent("onAuthStateChanged", result);
-						Log.d(LCAT, result.toString());
-						// User is signed in
-					} else {
-						// User is signed out
-					}
-			}
-		};
-		auth.addAuthStateListener(authListener);
 	}
 
 }

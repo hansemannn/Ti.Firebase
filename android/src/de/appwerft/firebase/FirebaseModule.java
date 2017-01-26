@@ -43,7 +43,7 @@ public class FirebaseModule extends KrollModule {
 	public static Activity activity;
 
 	private static TiApplication app;
-	public static final String LCAT = "FiBa 🚝🚝";
+	public static final String LCAT = "FiBa";
 
 	public FirebaseModule() {
 		super();
@@ -57,15 +57,14 @@ public class FirebaseModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public void initializeApp(KrollDict opts) {
-		initFirebase(opts);
+	public boolean initializeApp(KrollDict opts) {
+		return initFirebase(opts);
 	}
 
 	@Kroll.method
-	public void initFirebase(KrollDict opts) {
+	public boolean initFirebase(KrollDict opts) {
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
-		Log.d(LCAT, "packageName of this app = " + packageName);
 		try {
 			JSONObject json = new JSONObject(loadJSONFromAsset());
 			JSONObject projectInfo = json.getJSONObject("project_info");
@@ -73,6 +72,7 @@ public class FirebaseModule extends KrollModule {
 			databaseUrl = projectInfo.getString("firebase_url");
 			gcmSenderId = projectInfo.getString("project_number");
 			JSONArray clients = json.getJSONArray("client");
+			Log.d(LCAT, "I found " + clients.length() + " clients.");
 			for (int i = 0; i < clients.length(); i++) {
 				JSONObject client = clients.getJSONObject(i);
 				JSONObject clientInfo = client.getJSONObject("client_info");
@@ -91,43 +91,28 @@ public class FirebaseModule extends KrollModule {
 			if (apiKey == null)
 				Log.e(LCAT, packageName
 						+ " is not part of google-services.json");
+			FirebaseApp.initializeApp(ctx, new FirebaseOptions.Builder()
+					.setApiKey(apiKey).setApplicationId(applicationId)
+					.setDatabaseUrl(databaseUrl).setGcmSenderId(gcmSenderId)
+					.setStorageBucket(storageBucket).build());
+			auth = FirebaseAuth.getInstance();
+			return true;
 		} catch (JSONException e) {
 			e.printStackTrace();
+			return false;
 		}
-		/*
-		 * if (opts.containsKeyAndNotNull("apiKey")) apiKey =
-		 * opts.getString("apiKey"); if
-		 * (opts.containsKeyAndNotNull("applicationId")) applicationId =
-		 * opts.getString("applicationId"); if
-		 * (opts.containsKeyAndNotNull("databaseUrl")) databaseUrl =
-		 * opts.getString("databaseUrl"); if
-		 * (opts.containsKeyAndNotNull("gcmSenderId")) gcmSenderId =
-		 * opts.getString("gcmSenderId"); if
-		 * (opts.containsKeyAndNotNull("storageBucket")) storageBucket =
-		 * opts.getString("storageBucket");
-		 */
-		FirebaseApp.initializeApp(
-				ctx,
-				new FirebaseOptions.Builder().setApiKey(apiKey)
-						.setApplicationId(applicationId)
-						.setDatabaseUrl(databaseUrl)
-						.setGcmSenderId(gcmSenderId)
-						.setStorageBucket(storageBucket).build());
-		auth = FirebaseAuth.getInstance();
 	}
 
 	public String loadJSONFromAsset() {
 		String json = null;
 		try {
 			String url = resolveUrl(null, "google-services.json");
-			Log.d(LCAT, url);
-			TiBaseFile file = TiFileFactory.createTitaniumFile(
-					new String[] { url }, false);
-			InputStream is = file.getInputStream();
-			int size = is.available();
-			byte[] buffer = new byte[size];
-			is.read(buffer);
-			is.close();
+			Log.d(LCAT, "path of google-services.json = " + url);
+			InputStream inStream = TiFileFactory.createTitaniumFile(
+					new String[] { url }, false).getInputStream();
+			byte[] buffer = new byte[inStream.available()];
+			inStream.read(buffer);
+			inStream.close();
 			json = new String(buffer, "UTF-8");
 		} catch (IOException ex) {
 			ex.printStackTrace();
