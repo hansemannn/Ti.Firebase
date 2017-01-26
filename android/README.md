@@ -8,6 +8,7 @@ First you have to create a google-services.json following the instructions of [o
 For this you need your bundleID and optional the SHA1 key of you CERT.
 
 Download and copy  this file into Ressources folder inside your project folder. The json file is then neighbor of app.js
+In Alloy projects copy the file to `app/assets`
 
 ##Usage
 
