@@ -57,11 +57,6 @@ public class FirebaseModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public boolean initializeApp() {
-		return initFirebase();
-	}
-
-	@Kroll.method
 	public boolean initFirebase() {
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();

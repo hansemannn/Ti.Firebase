@@ -23,6 +23,12 @@ import com.google.firebase.auth.GithubAuthProvider;
 
 @Kroll.proxy(creatableInModule = FirebaseModule.class)
 public class AuthenticationProxy extends KrollProxy {
+	Activity activity = TiApplication.getAppRootOrCurrentActivity();
+	private FirebaseAuth auth = FirebaseModule.auth;
+	private FirebaseAuth.AuthStateListener authListener;
+	private static final String LCAT = FirebaseModule.LCAT;
+	KrollFunction onComplete;
+	KrollProxy proxy;
 
 	private final class AuthStateHandler implements
 			FirebaseAuth.AuthStateListener {
@@ -41,7 +47,7 @@ public class AuthenticationProxy extends KrollProxy {
 						result.put("photoUrl", user.getPhotoUrl());
 					if (hasListeners("onAuthStateChanged"))
 						fireEvent("onAuthStateChanged", result);
-					Log.d(LCAT, result.toString());
+					Log.d(LCAT, "onAuthStateChanged=" + result.toString());
 				} else {
 					Log.e(LCAT, "user was null in onAuthStateChanged");
 				}
@@ -56,16 +62,10 @@ public class AuthenticationProxy extends KrollProxy {
 				KrollDict kd = new KrollDict();
 				kd.put("success", task.isSuccessful());
 				onComplete.call(getKrollObject(), kd);
+				Log.d(LCAT, "OnCompleteHandler: " + kd.toString());
 			}
 		}
 	}
-
-	KrollProxy proxy;
-	private FirebaseAuth auth;
-	Activity activity = FirebaseModule.activity;
-	private FirebaseAuth.AuthStateListener authListener;
-	private static final String LCAT = FirebaseModule.LCAT;
-	KrollFunction onComplete;
 
 	public AuthenticationProxy() {
 		super();
@@ -73,8 +73,10 @@ public class AuthenticationProxy extends KrollProxy {
 
 	@Kroll.method
 	public void signInAnonymously(KrollDict opts) {
-		Log.d(LCAT, " signInAnonymously");
-		Activity activity = TiApplication.getAppRootOrCurrentActivity();
+		if (auth == null) {
+			Log.e(LCAT, "auth was null");
+			return;
+		}
 		if (opts.containsKeyAndNotNull("onComplete")) {
 			Object o = opts.get("onComplete");
 			if (o instanceof KrollFunction) {
@@ -82,22 +84,11 @@ public class AuthenticationProxy extends KrollProxy {
 				Log.d(LCAT, "onComplete callback imported");
 			}
 		}
-		Log.e(LCAT, "opts in signInAnonymously imported, try to initAuth()");
-		auth = FirebaseModule.auth;
-		if (auth == null) {
-			Log.e(LCAT, "auth was null");
-			return;
-		}
-		Log.d(LCAT,
-				"auth created, try to add AuthStateListener " + auth.toString());
+		Log.d(LCAT, "opts in signInAnonymously imported, try to initAuth()");
 		auth.addAuthStateListener(new AuthStateHandler());
-		Log.e(LCAT, "auth was not null, try to signInAnonymously");
-		if (activity != null) {
-			Log.d(LCAT, activity.toString());
-			auth.signInAnonymously().addOnCompleteListener(activity,
-					new OnCompleteHandler());
-		} else
-			Log.e(LCAT, "activity was null");
+		auth.signInAnonymously().addOnCompleteListener(activity,
+				new OnCompleteHandler());
+
 	}
 
 	@Kroll.method
