@@ -5,6 +5,7 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 import android.content.res.Configuration;
 import android.os.Build;
@@ -45,6 +46,7 @@ public class AnalyticsModule extends FirebaseModule {
 	final String LEVEL = FirebaseAnalytics.Param.LEVEL;
 	@Kroll.constant
 	final String LOCATION = FirebaseAnalytics.Param.LOCATION;
+
 	@Kroll.constant
 	final String MEDIUM = FirebaseAnalytics.Param.MEDIUM;
 	@Kroll.constant
@@ -55,6 +57,8 @@ public class AnalyticsModule extends FirebaseModule {
 	final String NUMBER_OF_ROOMS = FirebaseAnalytics.Param.NUMBER_OF_ROOMS;
 	@Kroll.constant
 	final String ORIGIN = FirebaseAnalytics.Param.ORIGIN;
+	@Kroll.constant
+	final String CAMPAIGN_DETAILS = FirebaseAnalytics.Event.CAMPAIGN_DETAILS;
 	@Kroll.constant
 	final String PRICE = FirebaseAnalytics.Param.PRICE;
 	@Kroll.constant
@@ -102,17 +106,36 @@ public class AnalyticsModule extends FirebaseModule {
 	@Kroll.method
 	public void sendEvent(KrollDict opts) {
 		Bundle bundle = new Bundle();
-		if (opts.containsKeyAndNotNull("id"))
-			bundle.putString(FirebaseAnalytics.Param.ITEM_ID,
-					opts.getString("id"));
-
-		if (opts.containsKeyAndNotNull("name"))
-			bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,
-					opts.getString("name"));
-		if (opts.containsKeyAndNotNull("category"))
-			bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY,
-					opts.getString("category"));
-
+		if (opts.containsKeyAndNotNull("campaignDetails")) {
+			KrollDict campaign = opts.getKrollDict("campaignDetails");
+			if (campaign.containsKeyAndNotNull(CampaignModule.CAMPAIGN)) {
+				bundle.putString(FirebaseAnalytics.Param.CAMPAIGN,
+						campaign.getString(CampaignModule.CAMPAIGN));
+			}
+			if (campaign.containsKeyAndNotNull(CampaignModule.ACLID)) {
+				bundle.putString(FirebaseAnalytics.Param.ACLID,
+						campaign.getString(CampaignModule.ACLID));
+			}
+			if (campaign.containsKeyAndNotNull(CampaignModule.CONTENT)) {
+				bundle.putString(FirebaseAnalytics.Param.CONTENT,
+						campaign.getString(CampaignModule.CONTENT));
+			}
+		}
+		String[] strings = { ACHIEVEMENT_ID, CHARACTER, CONTENT_TYPE, COUPON,
+				CURRENCY, DESTINATION, END_DATE, FLIGHT_NUMBER, GROUP_ID,
+				ITEM_CATEGORY, ITEM_ID, ITEM_LOCATION_ID, ITEM_NAME, LOCATION,
+				ORIGIN, SEARCH_TERM, SIGN_UP_METHOD, START_DATE,
+				TRANSACTION_ID, TRAVEL_CLASS, VIRTUAL_CURRENCY_NAME };
+		for (String s : strings) {
+			if (opts.containsKeyAndNotNull(s))
+				bundle.putString(s, opts.getString(s));
+		}
+		String[] longs = { LEVEL, NUMBER_OF_NIGHTS, NUMBER_OF_PASSENGERS,
+				NUMBER_OF_ROOMS, PRICE, QUANTITY, SCORE, SHIPPING, TAX, VALUE };
+		for (String s : longs) {
+			if (opts.containsKeyAndNotNull(s))
+				bundle.putLong(s, (long) opts.get(s));
+		}
 		firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT,
 				bundle);
 	}

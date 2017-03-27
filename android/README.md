@@ -94,7 +94,7 @@ Analytics.sendEvent({
     Analytics.LOCATION : "3983699",
     Analytics.ACHIEVEMENT_ID : "10_matches_won", // Game achievement ID (String)
     Analytics.ACLID : "12334", 
-    campaignDetails : Analytics.createCampaign({
+    Analytics.CAMPAIGN_DETAILS : Analytics.createCampaign({
         Analytics.Campaign.ACLID : "9e293283",
         Analytics.Campaign.CAMPAIGN : "9e293283",
         Analytics.Campaign.CONTENT : "9e293283",
