@@ -10,11 +10,12 @@ For this you need your bundleID and optional the SHA1 key of you CERT.
 Download and copy  this file into Ressources folder inside your project folder. The json file is then neighbor of app.js
 In Alloy projects copy the file to `app/assets`
 
-##Usage
-
-###Authentication
-####Basics
-
+Usage
+-------
+Authentication
+-----------------
+Basics
+------
 The auth/creds wil read from google-services.json. YOu can overwrite this in method `initFirebase()`
 ```javascript
 var FiBa =require("ti.firebase");
@@ -49,7 +50,8 @@ Auth.addEventListener("onAuthStateChanged",function(_event) {
 });
 ```
 
-###RT Database
+RT Database
+-----------
 ```javascript
 var FiBa = require("ti.firebase");
 var Db = FiBa.createDatabase();
@@ -61,7 +63,8 @@ Ref.addEventListener("onDataChange",function(_event){
 
 ``` 
 
-###Storage
+Storage
+-------
 The first step in accessing your storage bucket is to create an instance of FirebaseStorage:
 ```javascript
 
@@ -69,11 +72,13 @@ var FiBa = require("ti.firebase");
 var storage = FiBa.createFirebasestorage();
 ``` 
 
-###Analytics
+Analytics
+---------
+Please follow [these instructions](https://support.google.com/adwords/answer/6366292?hl=en)
+
 ```javascript
 
 var analytics = require("ti.firebase").Analytics;
-
 
 analytics.sendEvent({
     analytics.ITEM_ID : "39836299",

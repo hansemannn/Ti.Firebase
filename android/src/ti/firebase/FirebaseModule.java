@@ -51,11 +51,6 @@ public class FirebaseModule extends KrollModule {
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
 
-	@Kroll.constant
-	final String ANALYTICS_ACHIEVEMENT_ID = FirebaseAnalytics.Param.ACHIEVEMENT_ID;
-	@Kroll.constant
-	final String ANALYTICS_CHARACTER = FirebaseAnalytics.Param.CHARACTER;
-
 	static public class Analytics {
 
 		@Kroll.method

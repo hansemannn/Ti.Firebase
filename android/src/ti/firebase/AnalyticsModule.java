@@ -14,6 +14,10 @@ import android.os.Bundle;
 public class AnalyticsModule extends FirebaseModule {
 	@Kroll.constant
 	public static final int API_LEVEL = Build.VERSION.SDK_INT;
+	@Kroll.constant
+	final String ACHIEVEMENT_ID = FirebaseAnalytics.Param.ACHIEVEMENT_ID;
+	@Kroll.constant
+	final String CHARACTER = FirebaseAnalytics.Param.CHARACTER;
 
 	private FirebaseAnalytics firebaseAnalytics;
 
