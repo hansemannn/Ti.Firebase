@@ -233,6 +233,11 @@ public class AnalyticsModule extends FirebaseModule {
 		sendEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, opts);
 	}
 
+	@Kroll.method
+	public void setUserProperty(String key, String value) {
+		firebaseAnalytics.setUserProperty(key, value);
+	}
+
 	private void sendEvent(String event, KrollDict opts) {
 		Bundle bundle = new Bundle();
 		String[] strings = { ACHIEVEMENT_ID, CHARACTER, CONTENT_TYPE, COUPON,

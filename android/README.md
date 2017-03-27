@@ -84,17 +84,19 @@ var event = Firebase.Analytics.createEvent({
     Firebase.Analytics.ITEM_NAME : "39836299",
     Firebase.Analytics.TAX : "19.0",
     Firebase.Analytics.CURRENCY : "EUR",
-    Firebase.Analytics.PRICE : "39836.99",
+    Firebase.Analytics.PRICE : "12",
     Firebase.Analytics.START_DATE : "2017-02-28",
     Firebase.Analytics.END_DATE : "2017-02-28",
     Firebase.Analytics.SIGN_UP : "google",
-    Firebase.Analytics.SHIPPING : "9.40",
+    Firebase.Analytics.SHIPPING : "940",
     Firebase.Analytics.ITEM_LOCATION_ID : "ChIJiyj437sx3YAR9kUWC8QkLzQ", // Google Place ID
-    Firebase.Analytics.LEVEL : "39836.99", // Level in game (long).
+    Firebase.Analytics.LEVEL : "398369", // Level in game (long).
     Firebase.Analytics.LOCATION : "3983699",
     Firebase.Analytics.ACHIEVEMENT_ID : "10_matches_won", // Game achievement ID (String)
 });
-
+```
+Now you can send some events:
+```javascript
 Firebase.Analytics.selectContent(event);
 Firebase.Analytics.addPaymentInfo(event);
 Firebase.Analytics.addToCart(event);
@@ -123,6 +125,12 @@ Firebase.Analytics.viewItemList(event);
 Firebase.Analytics.viewSearchResults(event);
 
 ```
+Sets a user property to a given value. Up to 25 user property names are supported. Once set, user property values persist throughout the app lifecycle and across sessions.
+```javascript
+Firebase.Analytics.setUserProperty("favorite_food","dogs sweet sour");
+```
+
+
 You can use all paramters from this [documentation](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Param)
 
 
