@@ -77,31 +77,30 @@ Analytics
 Please follow [these instructions](https://support.google.com/adwords/answer/6366292?hl=en)
 
 ```javascript
-
-var Analytics = require("ti.firebase").Analytics;
-
-Analytics.sendEvent({
-    Analytics.ITEM_ID : "39836299",
-    Analytics.ITEM_NAME : "39836299",
-    Analytics.TAX : "19.0",
-    Analytics.CURRENCY : "EUR",
-    Analytics.PRICE : "39836.99",
-    Analytics.START_DATE : "2017-02-28",
-    Analytics.SIGN_UP : "google",
-    Analytics.SHIPPING : "9.40",
-    Analytics.ITEM_LOCATION_ID : "ChIJiyj437sx3YAR9kUWC8QkLzQ", // Google Place ID
-    Analytics.LEVEL : "39836.99", // Level in game (long).
-    Analytics.LOCATION : "3983699",
-    Analytics.ACHIEVEMENT_ID : "10_matches_won", // Game achievement ID (String)
-    Analytics.ACLID : "12334", 
-    Analytics.CAMPAIGN_DETAILS : Analytics.createCampaign({
-        Analytics.Campaign.ACLID : "9e293283",
-        Analytics.Campaign.CAMPAIGN : "9e293283",
-        Analytics.Campaign.CONTENT : "9e293283",
-        Analytics.Campaign.CP1 : "9e293283",
-        Analytics.Campaign.MEDIUM : "9e293283",
-        Analytics.Campaign.SOURCE : "9e293283",
-        Analytics.Campaign.TERM : "9e293283"
+var Firebase = require("ti.firebase");
+FireBase.init();
+Firebase.Analytics.sendEvent({
+    Firebase.Analytics.ITEM_ID : "39836299",
+    Firebase.Analytics.ITEM_NAME : "39836299",
+    Firebase.Analytics.TAX : "19.0",
+    Firebase.Analytics.CURRENCY : "EUR",
+    Firebase.Analytics.PRICE : "39836.99",
+    Firebase.Analytics.START_DATE : "2017-02-28",
+    Firebase.Analytics.END_DATE : "2017-02-28",
+    Firebase.Analytics.SIGN_UP : "google",
+    Firebase.Analytics.SHIPPING : "9.40",
+    Firebase.Analytics.ITEM_LOCATION_ID : "ChIJiyj437sx3YAR9kUWC8QkLzQ", // Google Place ID
+    Firebase.Analytics.LEVEL : "39836.99", // Level in game (long).
+    Firebase.Analytics.LOCATION : "3983699",
+    Firebase.Analytics.ACHIEVEMENT_ID : "10_matches_won", // Game achievement ID (String)
+    Firebase.Analytics.CAMPAIGN_DETAILS :   Firebase.Analytics.createCampaign({
+        Firebase.Analytics.Campaign.ACLID : "9e293283",
+        Firebase.Analytics.Campaign.CAMPAIGN : "9e293283",
+        Firebase.Analytics.Campaign.CONTENT : "9e293283",
+        Firebase.Analytics.Campaign.CP1 : "9e293283",
+        Firebase.Analytics.Campaign.MEDIUM : "9e293283",
+        Firebase.Analytics.Campaign.SOURCE : "9e293283",
+        Firebase.Analytics.Campaign.TERM : "9e293283"
     })
 });
 

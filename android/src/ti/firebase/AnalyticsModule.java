@@ -126,12 +126,12 @@ public class AnalyticsModule extends FirebaseModule {
 				ITEM_CATEGORY, ITEM_ID, ITEM_LOCATION_ID, ITEM_NAME, LOCATION,
 				ORIGIN, SEARCH_TERM, SIGN_UP_METHOD, START_DATE,
 				TRANSACTION_ID, TRAVEL_CLASS, VIRTUAL_CURRENCY_NAME };
+		String[] longs = { LEVEL, NUMBER_OF_NIGHTS, NUMBER_OF_PASSENGERS,
+				NUMBER_OF_ROOMS, PRICE, QUANTITY, SCORE, SHIPPING, TAX, VALUE };
 		for (String s : strings) {
 			if (opts.containsKeyAndNotNull(s))
 				bundle.putString(s, opts.getString(s));
 		}
-		String[] longs = { LEVEL, NUMBER_OF_NIGHTS, NUMBER_OF_PASSENGERS,
-				NUMBER_OF_ROOMS, PRICE, QUANTITY, SCORE, SHIPPING, TAX, VALUE };
 		for (String s : longs) {
 			if (opts.containsKeyAndNotNull(s))
 				bundle.putLong(s, (long) opts.get(s));
