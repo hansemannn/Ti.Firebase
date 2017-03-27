@@ -17,7 +17,7 @@ In Alloy projects copy the file to `app/assets`
 
 The auth/creds wil read from google-services.json. YOu can overwrite this in method `initFirebase()`
 ```javascript
-var FiBa =require("de.appwerft.firebase");
+var FiBa =require("ti.firebase");
 if (FiBa.initFirebase()) {
 	var Auth = FiBa.createAuthentication();
 	Auth.signInAnonymously({
@@ -51,7 +51,7 @@ Auth.addEventListener("onAuthStateChanged",function(_event) {
 
 ###RT Database
 ```javascript
-var FiBa = require("de.appwerft.firebase");
+var FiBa = require("ti.firebase");
 var Db = FiBa.createDatabase();
 var Ref = Db.createReference("Animals/Dog");
 Ref.setValue({color:"braun",sound:"wau"});
@@ -65,8 +65,14 @@ Ref.addEventListener("onDataChange",function(_event){
 The first step in accessing your storage bucket is to create an instance of FirebaseStorage:
 ```javascript
 
-var FiBa = require("de.appwerft.firebase");
+var FiBa = require("ti.firebase");
 var storage = FiBa.createFirebasestorage();
+``` 
+
+###Analytics
+```javascript
+
+require("ti.firebase").Analytics.sendEvent();
 ``` 
 
 
