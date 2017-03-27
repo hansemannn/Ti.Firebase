@@ -72,7 +72,32 @@ var storage = FiBa.createFirebasestorage();
 ###Analytics
 ```javascript
 
-require("ti.firebase").Analytics.sendEvent();
+var analytics = require("ti.firebase").Analytics;
+
+
+analytics.sendEvent({
+    analytics.ITEM_ID : "39836299",
+    analytics.ITEM_NAME : "39836299",
+    analytics.TAX : "39836.99",
+    analytics.PRICE : "39836.99",
+    analytics.ITEM_LOCATION_ID : "39836.99", // Google Place ID
+    analytics.LEVEL : "39836.99", // Level in game (long).
+    analytics.LOCATION : "3983699",
+    campaignDetails : {
+        analytics.CAMPAIGN_DETAIL_ACLID : "9e293283",
+        analytics.CAMPAIGN_DETAIL_CAMPAIGN : "9e293283",
+        analytics.CAMPAIGN_DETAIL_CONTENT : "9e293283",
+        analytics.CAMPAIGN_DETAIL_CP1 : "9e293283",
+        analytics.CAMPAIGN_DETAIL_MEDIUM : "9e293283",
+        analytics.CAMPAIGN_DETAIL_SOURCE : "9e293283",
+        analytics.CAMPAIGN_DETAIL_TERM : "9e293283"
+    }
+});
+
+```
+You can use all paramters from this [documentation](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Param)
+
+
 ``` 
 
 
