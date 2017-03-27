@@ -13,7 +13,7 @@ respackage : de.appwerft.firebase
 
 # these should not be edited
 name: firebase
-moduleid: de.appwerft.firebase
+moduleid: ti.firebase
 guid: b061ba9e-fd44-41f2-a0d2-62aecaa4d184
 platform: android
-minsdk: 5.2.0
+minsdk: 4.2.0
