@@ -79,7 +79,7 @@ Please follow [these instructions](https://support.google.com/adwords/answer/636
 ```javascript
 var Firebase = require("ti.firebase");
 FireBase.init();
-Firebase.Analytics.sendEvent({
+var event = Firebase.Analytics.createEvent({
     Firebase.Analytics.ITEM_ID : "39836299",
     Firebase.Analytics.ITEM_NAME : "39836299",
     Firebase.Analytics.TAX : "19.0",
@@ -93,16 +93,34 @@ Firebase.Analytics.sendEvent({
     Firebase.Analytics.LEVEL : "39836.99", // Level in game (long).
     Firebase.Analytics.LOCATION : "3983699",
     Firebase.Analytics.ACHIEVEMENT_ID : "10_matches_won", // Game achievement ID (String)
-    Firebase.Analytics.CAMPAIGN_DETAILS :   Firebase.Analytics.createCampaign({
-        Firebase.Analytics.Campaign.ACLID : "9e293283",
-        Firebase.Analytics.Campaign.CAMPAIGN : "9e293283",
-        Firebase.Analytics.Campaign.CONTENT : "9e293283",
-        Firebase.Analytics.Campaign.CP1 : "9e293283",
-        Firebase.Analytics.Campaign.MEDIUM : "9e293283",
-        Firebase.Analytics.Campaign.SOURCE : "9e293283",
-        Firebase.Analytics.Campaign.TERM : "9e293283"
-    })
 });
+
+Firebase.Analytics.selectContent(event);
+Firebase.Analytics.addPaymentInfo(event);
+Firebase.Analytics.addToCart(event);
+Firebase.Analytics.addToWishlist(event);
+Firebase.Analytics.appOpen(event);
+Firebase.Analytics.beginCheckout(event);
+Firebase.Analytics.compainDetails(event);
+Firebase.Analytics.earnVirtualCurrency(event);
+Firebase.Analytics.ecommercePurchase(event);
+Firebase.Analytics.generateLead(event);
+Firebase.Analytics.joinGroup(event);
+Firebase.Analytics.levelUp(event);
+Firebase.Analytics.login(event);
+Firebase.Analytics.postScore(event);
+Firebase.Analytics.presentOffer(event);
+Firebase.Analytics.purchaseRefound(event);
+Firebase.Analytics.search(event);
+Firebase.Analytics.share(event);
+Firebase.Analytics.signUp(event);
+Firebase.Analytics.spendVirtualCurrency(event);
+Firebase.Analytics.tutorialBegin(event);
+Firebase.Analytics.tutorialComplete(event);
+Firebase.Analytics.unlockArchievement(event);
+Firebase.Analytics.viewItem(event);
+Firebase.Analytics.viewItemList(event);
+Firebase.Analytics.viewSearchResults(event);
 
 ```
 You can use all paramters from this [documentation](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Param)

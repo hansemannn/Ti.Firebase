@@ -99,28 +99,142 @@ public class AnalyticsModule extends FirebaseModule {
 		return "Ti.Platform.Android";
 	}
 
-	public KrollDict createCampaign(KrollDict c) {
-		return c;
+	public KrollDict createEvent(KrollDict event) {
+		return event;
 	}
 
 	@Kroll.method
-	public void sendEvent(KrollDict opts) {
+	public void selectContent(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, opts);
+	}
+
+	@Kroll.method
+	public void addPaymentInfo(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, opts);
+	}
+
+	@Kroll.method
+	public void addToCart(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.ADD_TO_CART, opts);
+	}
+
+	@Kroll.method
+	public void addToWishlist(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, opts);
+	}
+
+	@Kroll.method
+	public void appOpen(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.APP_OPEN, opts);
+	}
+
+	@Kroll.method
+	public void beginCheckout(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, opts);
+	}
+
+	@Kroll.method
+	public void compainDetails(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS, opts);
+	}
+
+	@Kroll.method
+	public void earnVirtualCurrency(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.EARN_VIRTUAL_CURRENCY, opts);
+	}
+
+	@Kroll.method
+	public void ecommercePurchase(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, opts);
+	}
+
+	@Kroll.method
+	public void generateLead(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.GENERATE_LEAD, opts);
+	}
+
+	@Kroll.method
+	public void joinGroup(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.JOIN_GROUP, opts);
+	}
+
+	@Kroll.method
+	public void levelUp(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.LEVEL_UP, opts);
+	}
+
+	@Kroll.method
+	public void login(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.LOGIN, opts);
+	}
+
+	@Kroll.method
+	public void postScore(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.POST_SCORE, opts);
+	}
+
+	@Kroll.method
+	public void presentOffer(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.PRESENT_OFFER, opts);
+	}
+
+	@Kroll.method
+	public void purchaseRefound(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.PURCHASE_REFUND, opts);
+	}
+
+	@Kroll.method
+	public void search(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.SEARCH, opts);
+	}
+
+	@Kroll.method
+	public void share(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.SHARE, opts);
+	}
+
+	@Kroll.method
+	public void signUp(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.SIGN_UP, opts);
+	}
+
+	@Kroll.method
+	public void spendVirtualCurrency(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.SPEND_VIRTUAL_CURRENCY, opts);
+	}
+
+	@Kroll.method
+	public void tutorialBegin(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, opts);
+	}
+
+	@Kroll.method
+	public void tutorialComplete(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.TUTORIAL_COMPLETE, opts);
+	}
+
+	@Kroll.method
+	public void unlockArchievement(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.UNLOCK_ACHIEVEMENT, opts);
+	}
+
+	@Kroll.method
+	public void viewItem(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.VIEW_ITEM, opts);
+	}
+
+	@Kroll.method
+	public void viewItemList(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, opts);
+	}
+
+	@Kroll.method
+	public void viewSearchResults(KrollDict opts) {
+		sendEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, opts);
+	}
+
+	private void sendEvent(String event, KrollDict opts) {
 		Bundle bundle = new Bundle();
-		if (opts.containsKeyAndNotNull("campaignDetails")) {
-			KrollDict campaign = opts.getKrollDict("campaignDetails");
-			if (campaign.containsKeyAndNotNull(CampaignModule.CAMPAIGN)) {
-				bundle.putString(FirebaseAnalytics.Param.CAMPAIGN,
-						campaign.getString(CampaignModule.CAMPAIGN));
-			}
-			if (campaign.containsKeyAndNotNull(CampaignModule.ACLID)) {
-				bundle.putString(FirebaseAnalytics.Param.ACLID,
-						campaign.getString(CampaignModule.ACLID));
-			}
-			if (campaign.containsKeyAndNotNull(CampaignModule.CONTENT)) {
-				bundle.putString(FirebaseAnalytics.Param.CONTENT,
-						campaign.getString(CampaignModule.CONTENT));
-			}
-		}
 		String[] strings = { ACHIEVEMENT_ID, CHARACTER, CONTENT_TYPE, COUPON,
 				CURRENCY, DESTINATION, END_DATE, FLIGHT_NUMBER, GROUP_ID,
 				ITEM_CATEGORY, ITEM_ID, ITEM_LOCATION_ID, ITEM_NAME, LOCATION,
@@ -136,7 +250,6 @@ public class AnalyticsModule extends FirebaseModule {
 			if (opts.containsKeyAndNotNull(s))
 				bundle.putLong(s, (long) opts.get(s));
 		}
-		firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT,
-				bundle);
+		firebaseAnalytics.logEvent(event, bundle);
 	}
 }
