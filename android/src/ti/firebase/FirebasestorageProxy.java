@@ -6,7 +6,7 @@
  * Please see the LICENSE included with this distribution for details.
  *
  */
-package de.appwerft.firebase;
+package ti.firebase;
 
 import org.appcelerator.kroll.KrollProxy;
 

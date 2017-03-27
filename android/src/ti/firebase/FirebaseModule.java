@@ -6,7 +6,7 @@
  * Please see the LICENSE included with this distribution for details.
  *
  */
-package de.appwerft.firebase;
+package ti.firebase;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.*;
 
-@Kroll.module(name = "firebase", id = "ti.firebase")
+@Kroll.module(name = "Firebase", id = "ti.firebase")
 public class FirebaseModule extends KrollModule {
 	public static FirebaseAuth auth;
 	public static Context ctx;
