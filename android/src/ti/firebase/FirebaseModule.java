@@ -51,15 +51,6 @@ public class FirebaseModule extends KrollModule {
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
 
-	static public class Analytics {
-
-		@Kroll.method
-		public void sendEvent(KrollDict opts) {
-
-		}
-
-	}
-
 	public FirebaseModule() {
 		super();
 	}
@@ -72,35 +63,41 @@ public class FirebaseModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public boolean initFirebase() {
+	public boolean initFirebase(@Kroll.argument(optional=true) String path) {
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
 		try {
-			JSONObject json = new JSONObject(loadJSONFromAsset());
+			JSONObject json = new JSONObject(loadJSONFromAsset(path));
 			JSONObject projectInfo = json.getJSONObject("project_info");
-			storageBucket = projectInfo.getString("storage_bucket");
-			databaseUrl = projectInfo.getString("firebase_url");
-			gcmSenderId = projectInfo.getString("project_number");
-			JSONArray clients = json.getJSONArray("client");
-			Log.d(LCAT, "I found " + clients.length() + " clients.");
-			for (int i = 0; i < clients.length(); i++) {
-				JSONObject client = clients.getJSONObject(i);
-				JSONObject clientInfo = client.getJSONObject("client_info");
-				String pName = clientInfo.getJSONObject("android_client_info")
-						.getString("package_name");
-				Log.d(LCAT, "packageName in clients of json = " + pName);
-				if (pName.equals(packageName)) {
-					Log.d(LCAT, "packageName found in json ");
-					Log.d(LCAT, clients.getJSONObject(i).toString());
-					applicationId = client.getJSONObject("client_info")
-							.getString("mobilesdk_app_id");
-					apiKey = client.getJSONArray("api_key").getJSONObject(0)
-							.getString("current_key");
+			if (projectInfo.has("storage_bucket"))
+				storageBucket = projectInfo.getString("storage_bucket");
+			if (projectInfo.has("firebase_url"))
+				databaseUrl = projectInfo.getString("firebase_url");
+			if (projectInfo.has("project_number"))
+				gcmSenderId = projectInfo.getString("project_number");
+			if (json.has("client")) {
+				JSONArray clients = json.getJSONArray("client");
+				Log.d(LCAT, "I found " + clients.length() + " clients.");
+				for (int i = 0; i < clients.length(); i++) {
+					JSONObject client = clients.getJSONObject(i);
+					JSONObject clientInfo = client.getJSONObject("client_info");
+					String pName = clientInfo.getJSONObject(
+							"android_client_info").getString("package_name");
+					Log.d(LCAT, "packageName in clients of json = " + pName);
+					if (pName.equals(packageName)) {
+						Log.d(LCAT, "packageName found in json ");
+						Log.d(LCAT, clients.getJSONObject(i).toString());
+						applicationId = client.getJSONObject("client_info")
+								.getString("mobilesdk_app_id");
+						apiKey = client.getJSONArray("api_key")
+								.getJSONObject(0).getString("current_key");
+					}
 				}
 			}
 			if (apiKey == null)
 				Log.e(LCAT, packageName
 						+ " is not part of google-services.json");
+			// all collected from JSON, building of FirebaseOptions:
 			FirebaseApp.initializeApp(ctx, new FirebaseOptions.Builder()
 					.setApiKey(apiKey).setApplicationId(applicationId)
 					.setDatabaseUrl(databaseUrl).setGcmSenderId(gcmSenderId)
@@ -113,10 +110,10 @@ public class FirebaseModule extends KrollModule {
 		}
 	}
 
-	public String loadJSONFromAsset() {
+	public String loadJSONFromAsset(String path) {
 		String json = null;
 		try {
-			String url = resolveUrl(null, "google-services.json");
+			String url = resolveUrl(null, path + "google-services.json");
 			Log.d(LCAT, "path of google-services.json = " + url);
 			InputStream inStream = TiFileFactory.createTitaniumFile(
 					new String[] { url }, false).getInputStream();

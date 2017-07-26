@@ -79,6 +79,7 @@ Please follow [these instructions](https://support.google.com/adwords/answer/636
 ```javascript
 var Firebase = require("ti.firebase");
 FireBase.init();
+
 var event = Firebase.Analytics.createEvent({
     Firebase.Analytics.ITEM_ID : "39836299",
     Firebase.Analytics.ITEM_NAME : "39836299",
@@ -127,6 +128,7 @@ Firebase.Analytics.viewSearchResults(event);
 ```
 Sets a user property to a given value. Up to 25 user property names are supported. Once set, user property values persist throughout the app lifecycle and across sessions.
 ```javascript
+Firebase.Analytics.setUserId(id);
 Firebase.Analytics.setUserProperty("favorite_food","dogs sweet sour");
 ```
 
