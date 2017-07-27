@@ -37,6 +37,12 @@ Auth.addEventListener("onAuthStateChanged",function(_event) {
 	if (_event) console.log(_event.user);
 });
 
+## Cloud messaging
+```javascript
+var token = require("ti.firebase").CloudMessaging.getToken();
+```
+
+
 Auth.createUserWithEmailAndPassword("xxx@xxxx.de","sehrGeheim");
 
 Auth.signInWithEmailAndPassword(email, password,
