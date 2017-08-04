@@ -50,7 +50,12 @@ public class FirebaseModule extends KrollModule {
 
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
-
+	public static final boolean DBG = true;
+	
+	public static void L(String message) {
+		if (DBG) Log.d(LCAT,message);
+	}
+	
 	public FirebaseModule() {
 		super();
 	}

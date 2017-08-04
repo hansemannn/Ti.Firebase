@@ -2,9 +2,9 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.1.1
-apiversion: 2
-architectures: armeabi armeabi-v7a x86
+version: 2.0.0
+apiversion: 3
+architectures:  armeabi-v7a x86
 description: Titanium module for Googles Firebase
 author: Rainer Schleevoigt
 license: Apache
@@ -16,4 +16,4 @@ name: firebase
 moduleid: ti.firebase
 guid: b061ba9e-fd44-41f2-a0d2-62aecaa4d184
 platform: android
-minsdk: 4.2.02
+minsdk: 6.0.0

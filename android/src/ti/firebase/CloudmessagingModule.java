@@ -12,6 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics.Param;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import ti.firebase.FirebaseModule;
 
 @Kroll.module(parentModule = FirebaseModule.class)
 public class CloudmessagingModule extends FirebaseModule {
@@ -23,6 +24,7 @@ public class CloudmessagingModule extends FirebaseModule {
 
 	@Kroll.method
 	public static synchronized String getToken() {
+		L("getToken");
 		return FirebaseInstanceId.getInstance().getToken();
 	}
 
