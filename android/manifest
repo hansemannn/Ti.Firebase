@@ -2,14 +2,14 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 2.0.0
+version: 2.0.3
 apiversion: 3
 architectures:  armeabi-v7a x86
 description: Titanium module for Googles Firebase
 author: Rainer Schleevoigt
 license: Apache
 copyright: Copyright (c) 2017 by 
-respackage : ti.firebase
+#respackage : ti.firebase
 
 # these should not be edited
 name: firebase
