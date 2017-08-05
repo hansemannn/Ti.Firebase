@@ -11,68 +11,59 @@ package ti.firebase;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
-import org.appcelerator.titanium.io.TiBaseFile;
 import org.appcelerator.titanium.io.TiFileFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.PowerManager;
-import android.provider.Settings;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.*;
 
 @Kroll.module(name = "Firebase", id = "ti.firebase")
 public class FirebaseModule extends KrollModule {
 	public static FirebaseAuth auth;
-	public static Context ctx;
+	
 	private static String apiKey;
 	private static String applicationId;
 	private static String databaseUrl;
 	private static String gcmSenderId;
 	private static String storageBucket;
-	public static Activity activity;
+	
 
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
 	public static final boolean DBG = true;
-	
+
 	public static void L(String message) {
-		if (DBG) Log.d(LCAT,message);
+		if (DBG)
+			Log.d(LCAT, message);
 	}
-	
+
 	public FirebaseModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication _app) {
-		ctx = _app.getApplicationContext();
-		app = _app;
-		activity = _app.getCurrentActivity();
+		L("onAppCreate");
 	}
 
 	@Kroll.method
-	public boolean initFirebase(@Kroll.argument(optional=true) String path) {
+	public boolean initFirebase() {
+		L("initFirebase started");
+		
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
+		L(packageName);
 		try {
-			JSONObject json = new JSONObject(loadJSONFromAsset(path));
+			JSONObject json = new JSONObject(loadJSONFromAsset());
 			JSONObject projectInfo = json.getJSONObject("project_info");
 			if (projectInfo.has("storage_bucket"))
 				storageBucket = projectInfo.getString("storage_bucket");
@@ -99,14 +90,25 @@ public class FirebaseModule extends KrollModule {
 					}
 				}
 			}
-			if (apiKey == null)
+			if (apiKey == null) {
 				Log.e(LCAT, packageName
 						+ " is not part of google-services.json");
+				return false;
+			}
 			// all collected from JSON, building of FirebaseOptions:
-			FirebaseApp.initializeApp(ctx, new FirebaseOptions.Builder()
+			L("start FB init");
+			L("apiKey = " + apiKey);
+			L("applicationId = " + applicationId);
+			L("databaseUrl = " + databaseUrl);
+			L("gcmSenderId = " + gcmSenderId);
+			L("storageBucket = " + storageBucket);
+			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setApiKey(apiKey).setApplicationId(applicationId)
 					.setDatabaseUrl(databaseUrl).setGcmSenderId(gcmSenderId)
-					.setStorageBucket(storageBucket).build());
+					.setStorageBucket(storageBucket).build();
+			L("firebaseOptions built");
+			FirebaseApp.initializeApp(TiApplication.getInstance().getApplicationContext(), options);
+			L("initializeApp is ready");
 			auth = FirebaseAuth.getInstance();
 			return true;
 		} catch (JSONException e) {
@@ -115,17 +117,20 @@ public class FirebaseModule extends KrollModule {
 		}
 	}
 
-	public String loadJSONFromAsset(String path) {
+	public String loadJSONFromAsset() {
 		String json = null;
+
 		try {
-			String url = resolveUrl(null, path + "google-services.json");
+			String url = resolveUrl(null, "google-services.json");
 			Log.d(LCAT, "path of google-services.json = " + url);
+
 			InputStream inStream = TiFileFactory.createTitaniumFile(
 					new String[] { url }, false).getInputStream();
 			byte[] buffer = new byte[inStream.available()];
 			inStream.read(buffer);
 			inStream.close();
 			json = new String(buffer, "UTF-8");
+			L(json);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			return null;
