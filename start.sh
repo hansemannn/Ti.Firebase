@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APPID=ti.firebase
-VERSION=2.0.6
+VERSION=2.0.9
 
 #cp android/assets/* iphone/
 

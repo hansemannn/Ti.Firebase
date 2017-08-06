@@ -29,13 +29,13 @@ import com.google.firebase.auth.FirebaseAuth;
 @Kroll.module(name = "Firebase", id = "ti.firebase")
 public class FirebaseModule extends KrollModule {
 	public static FirebaseAuth auth;
-	
+
 	private static String apiKey;
 	private static String applicationId;
 	private static String databaseUrl;
 	private static String gcmSenderId;
 	private static String storageBucket;
-	
+	private static Context ctx;
 
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
@@ -52,13 +52,14 @@ public class FirebaseModule extends KrollModule {
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication _app) {
-		L("onAppCreate");
+		ctx = _app.getApplicationContext();
+		app = _app;
+			L("onAppCreate");
 	}
 
 	@Kroll.method
 	public boolean initFirebase() {
 		L("initFirebase started");
-		
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
 		L(packageName);
@@ -107,8 +108,8 @@ public class FirebaseModule extends KrollModule {
 					.setDatabaseUrl(databaseUrl).setGcmSenderId(gcmSenderId)
 					.setStorageBucket(storageBucket).build();
 			L("firebaseOptions built");
-			FirebaseApp.initializeApp(TiApplication.getInstance().getApplicationContext(), options);
-			L("initializeApp is ready");
+			FirebaseApp.initializeApp(ctx, options);
+			L("FirebaseApp is ready for fun");
 			auth = FirebaseAuth.getInstance();
 			return true;
 		} catch (JSONException e) {
@@ -121,7 +122,7 @@ public class FirebaseModule extends KrollModule {
 		String json = null;
 
 		try {
-			String url = resolveUrl(null, "google-services.json");
+			String url = this.resolveUrl(null, "google-services.json");
 			Log.d(LCAT, "path of google-services.json = " + url);
 
 			InputStream inStream = TiFileFactory.createTitaniumFile(
