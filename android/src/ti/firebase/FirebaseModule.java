@@ -35,7 +35,7 @@ public class FirebaseModule extends KrollModule {
 	private static String databaseUrl;
 	private static String gcmSenderId;
 	private static String storageBucket;
-	private static Context ctx;
+	private  Context ctx;
 
 	private static TiApplication app;
 	public static final String LCAT = "FiBa";
@@ -48,17 +48,23 @@ public class FirebaseModule extends KrollModule {
 
 	public FirebaseModule() {
 		super();
+		L("FirebaseModule constructor with empty parameter");
+		
+	}
+	public FirebaseModule(final Context ctx) {
+		super();
+		this.ctx = ctx;
+		L("FirebaseModule constructor with context as parameter");
 	}
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication _app) {
-		ctx = _app.getApplicationContext();
 		app = _app;
 			L("onAppCreate");
 	}
 
 	@Kroll.method
-	public boolean initFirebase() {
+	public boolean initFirebaseApp() {
 		L("initFirebase started");
 		String packageName = TiApplication.getAppCurrentActivity()
 				.getPackageName();
