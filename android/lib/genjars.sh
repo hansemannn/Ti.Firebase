@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=10.0.0
+VERSION=9.6.0
 GOOGLE=/opt/android-sdk/extras/google/m2repository/com/google
 AAR2JAR=/usr/local/bin/aar2jar.sh
 
@@ -15,7 +15,12 @@ $AAR2JAR $GOOGLE/android/gms/play-services-tasks/$VERSION/play-services-tasks-$V
 
 $AAR2JAR $GOOGLE/firebase/firebase-analytics/$VERSION/firebase-analytics-$VERSION.aar .
 $AAR2JAR $GOOGLE/firebase/firebase-analytics-impl/$VERSION/firebase-analytics-impl-$VERSION.aar .
+
 $AAR2JAR $GOOGLE/firebase/firebase-auth/$VERSION/firebase-auth-$VERSION.aar .
+$AAR2JAR $GOOGLE/firebase/firebase-auth-common/$VERSION/firebase-auth-common-$VERSION.aar .
+$AAR2JAR $GOOGLE/firebase/firebase-auth-impl/$VERSION/firebase-auth-impl-$VERSION.aar .
+$AAR2JAR $GOOGLE/firebase/firebase-auth-module/$VERSION/firebase-auth-module-$VERSION.aar .
+
 $AAR2JAR $GOOGLE/firebase/firebase-common/$VERSION/firebase-common-$VERSION.aar .
 $AAR2JAR $GOOGLE/firebase/firebase-config/$VERSION/firebase-config-$VERSION.aar .
 $AAR2JAR $GOOGLE/firebase/firebase-crash/$VERSION/firebase-crash-$VERSION.aar .
