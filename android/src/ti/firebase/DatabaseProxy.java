@@ -32,5 +32,4 @@ public class DatabaseProxy extends KrollProxy {
 				this.proxy);
 		return databaserefproxy.createReference(this, ref);
 	}
-
 }

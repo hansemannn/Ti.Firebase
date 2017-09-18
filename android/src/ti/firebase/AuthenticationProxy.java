@@ -87,14 +87,12 @@ public class AuthenticationProxy extends KrollProxy {
 		auth.addAuthStateListener(new AuthStateHandler());
 		auth.signInAnonymously().addOnCompleteListener(activity,
 				new OnCompleteHandler());
-
 	}
 
 	@Kroll.method
 	public void createUserWithEmailAndPassword(String email, String password) {
 		auth.createUserWithEmailAndPassword(email, password)
 				.addOnCompleteListener(activity, new OnCompleteHandler());
-
 	}
 
 	@Kroll.method
@@ -109,5 +107,4 @@ public class AuthenticationProxy extends KrollProxy {
 		auth.signInWithCredential(credential).addOnCompleteListener(activity,
 				new OnCompleteHandler());
 	}
-
 }

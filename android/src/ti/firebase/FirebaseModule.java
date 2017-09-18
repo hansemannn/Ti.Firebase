@@ -49,10 +49,8 @@ public class FirebaseModule extends KrollModule {
 	public FirebaseModule() {
 		super();
 		L("FirebaseModule constructor with empty parameter");
-		
 	}
 	
-
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication _app) {
 		app = _app;
@@ -100,22 +98,15 @@ public class FirebaseModule extends KrollModule {
 						+ " is not part of google-services.json");
 				return false;
 			}
+
 			// all collected from JSON, building of FirebaseOptions:
-			L("start FB init");
-			L("apiKey = " + apiKey);
-			L("applicationId = " + applicationId);
-			L("databaseUrl = " + databaseUrl);
-			L("gcmSenderId = " + gcmSenderId);
-			L("storageBucket = " + storageBucket);
 			TiApplication.getInstance().getBaseContext();
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setApiKey(apiKey).setApplicationId(applicationId)
 					.setDatabaseUrl(databaseUrl).setGcmSenderId(gcmSenderId)
 					.setStorageBucket(storageBucket).build();
-			L("firebaseOptions built");
 			
 			FirebaseApp.initializeApp(ctx, options);
-			L("FirebaseApp is ready for fun");
 			auth = FirebaseAuth.getInstance();
 			return true;
 		} catch (JSONException e) {
@@ -137,12 +128,10 @@ public class FirebaseModule extends KrollModule {
 			inStream.read(buffer);
 			inStream.close();
 			json = new String(buffer, "UTF-8");
-			L(json);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			return null;
 		}
 		return json;
 	}
-
 }
