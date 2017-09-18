@@ -23,14 +23,14 @@ in the  `initFirebase()` method.
 var Firebase = require('ti.firebase');
 
 if (Firebase.initFirebaseApp()) {
-	var Auth = Firebase.createAuthentication();
-	Auth.signInAnonymously({
-		onComplete: function(_event) {
+  var Auth = Firebase.createAuthentication();
+  Auth.signInAnonymously({
+    onComplete: function(_event) {
       if (_event) {
         console.log(_event);
       }
- 		}
-	}
+    }
+  }
 });
 
 Auth.addEventListener('onAuthStateChanged', function(e) {
